@@ -1,15 +1,18 @@
 ## 2021-12-09 ====
 
+## add vignette painting
+usethis::use_article("painting")
+
 ## tinytest
-# tinytest::setup_tinytest(pkgdir = ".")
+tinytest::setup_tinytest(pkgdir = ".")
 
 ## license and readme
-# usethis::use_readme_rmd()
-# usethis::use_mit_license(copyright_holder = "Hendrik Wagenseil")
+usethis::use_readme_rmd()
+usethis::use_mit_license(copyright_holder = "Hendrik Wagenseil")
 
 ## dev_history.R
-# usethis::use_build_ignore("dev_history.R")
-# usethis::edit_file("dev_history.R")
+usethis::use_build_ignore("dev_history.R")
+usethis::edit_file("dev_history.R")
 
 ## create package
 # usethis::create_package("~/Documents/repos/github/aRts")
