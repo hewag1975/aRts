@@ -1,3 +1,6 @@
+## 2021-12-13 ====
+usethis::use_data_raw("pic")
+
 ## 2021-12-09 ====
 ## reference
 # https://usethis.r-lib.org/reference/index.html#package-setup
