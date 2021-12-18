@@ -1,7 +1,9 @@
-## code to prepare `pic` dataset goes here
-ifl = "~/Pictures/images/pic_001.jpg"
-pic = stars::read_stars(ifl)
-names(pic) = "Autumn forest"
-sf::st_crs(pic) = 3035
+## code to prepare sample datasets goes here
 
-usethis::use_data(pic, overwrite = TRUE)
+## autumn
+ifl = "~/Pictures/images/pic_001.jpg"
+autumn = stars::read_stars(ifl)
+names(autumn) = "Autumn forest"
+sf::st_crs(autumn) = 3035
+
+usethis::use_data(autumn, overwrite = TRUE)
