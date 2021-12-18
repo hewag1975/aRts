@@ -1,5 +1,7 @@
 ---
 title: "painting"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
@@ -9,6 +11,82 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Installation
+
+Currently there is no version on `CRAN`. You can install the package from github.
+
 ```{r setup}
+# remotes::install_github("hewag1975/aRts")
 library(aRts)
 ```
+
+## Make a paining from a photo
+
+The package comes with a few example image which can be used for exploration. 
+All the included images have been converted to an object of class `stars`. 
+
+```{r}
+data(autumn)
+class(autumn)
+autumn
+```
+
+As you can see, the image has three dimensions (`r dim(autumn)`) and also has a 
+CRS assigned (`r sf::st_crs(autumn)$input`). Now, this does not make sense for a 
+photo but is just make it work. 
+
+
+
+Create a painting using the default settings.
+
+```{r}
+plot(autumn, rgb = 1:3)
+autumn_paint = painting(autumn)
+autumn_paint
+class(autumn_paint)
+plot(autumn_paint)
+```
+
+Plot original image and painting side by side.
+
+```{r}
+par(mfrow = c(1, 2))
+plot(autumn_paint)
+
+
+```
+
+Save the image to disk.
+
+```{r}
+# plot(sc)
+# class(sc)
+# jpeg(
+#     "img/fichtel_sc.jpg"
+#     , width = dim(img)[1]
+#     , height = dim(img)[2]
+#     , units = "px"
+# )
+# plot(
+#     sf::st_geometry(sc)
+#     , border = NA
+#     , col = sc$col
+# )
+# dev.off()
+```
+
+
+## Image preparation
+
+```{r}
+ifl = "~/Pictures/images/pic_001.jpg"
+autumn = stars::read_stars(ifl)
+names(autumn) = "Autumn forest"
+plot(autumn, rgb = 1:3)
+
+painting(autumn)
+sf::st_crs(autumn) = 3035
+
+```
+
+
