@@ -6,19 +6,11 @@ editor_options:
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+    collapse = TRUE,
+    comment = "#>"
 )
 ```
 
-## Installation
-
-Currently there is no version on `CRAN`. You can install the package from github.
-
-```{r setup}
-# remotes::install_github("hewag1975/aRts")
-library(aRts)
-```
 
 ## Make a paining from a photo
 
@@ -26,6 +18,9 @@ The package comes with a few example image which can be used for exploration.
 All the included images have been converted to an object of class `stars`. 
 
 ```{r}
+library(stars)
+library(sf)
+library(aRts)
 data(autumn)
 class(autumn)
 autumn
@@ -35,25 +30,21 @@ As you can see, the image has three dimensions (`r dim(autumn)`) and also has a
 CRS assigned (`r sf::st_crs(autumn)$input`). Now, this does not make sense for a 
 photo but is just make it work. 
 
-
-
 Create a painting using the default settings.
 
 ```{r}
-plot(autumn, rgb = 1:3)
+plot(autumn, rgb = 1:3, main = "", reset = FALSE, useRaster = TRUE)
 autumn_paint = painting(autumn)
 autumn_paint
 class(autumn_paint)
-plot(autumn_paint)
 ```
 
 Plot original image and painting side by side.
 
 ```{r}
 par(mfrow = c(1, 2))
+plot(autumn, rgb = 1:3, main = "", reset = FALSE, useRaster = TRUE)
 plot(autumn_paint)
-
-
 ```
 
 Save the image to disk.
@@ -78,15 +69,20 @@ Save the image to disk.
 
 ## Image preparation
 
-```{r}
+```{r, eval = FALSE}
 ifl = "~/Pictures/images/pic_001.jpg"
 autumn = stars::read_stars(ifl)
 names(autumn) = "Autumn forest"
-plot(autumn, rgb = 1:3)
-
-painting(autumn)
-sf::st_crs(autumn) = 3035
-
 ```
 
+
+
+```{r}
+data(mountains)
+mountains_paint = painting(mountains)
+
+par(mfrow = c(1, 2))
+plot(mountains, main = "", rgb = 1:3, reset = FALSE, useRaster = TRUE)
+plot(mountains_paint)
+```
 
