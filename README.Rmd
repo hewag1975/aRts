@@ -18,12 +18,33 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of aRts is to ...
+Sometimes data science methods for data collection and data processing not only 
+produce meaningful results, they also can be used to create just nice looking 
+plots. This package is a very personal collection of artwork that I have been 
+working on over the last couple of years. 
 
 ## Installation
 
-You can install the development version of aRts like so:
+Currently there is no version on `CRAN`. You can install the development version 
+of `aRts` from github using:
 
-``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+```{r setup, eval = FALSE}
+install.packages("remotes")
+remotes::install_github("hewag1975/aRts")
+library(aRts)
 ```
+
+
+## Content
+
+Currently, the packages contains code and documentation for 
+
+* making paintings from photographs using the [supercells](https://github.com/Nowosad/supercells/)-package
+* ...
+
+For every workflow there is a vignette available describing the idea, the process and the results using some examples.
+
+
+## Kudos
+
+Inspiration for these artwork came from many other R-packages and their authors, namely [Jakub Nowosad](https://github.com/Nowosad), ...
