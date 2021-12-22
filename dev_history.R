@@ -1,3 +1,8 @@
+## 2021-12-22 ====
+## configure package to use pkgdown and build site locally
+usethis::use_pkgdown()
+pkgdown::build_site()
+
 ## 2021-12-13 ====
 usethis::use_data_raw("pic")
 
