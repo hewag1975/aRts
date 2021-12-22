@@ -43,10 +43,10 @@ painting = function(
         sc_args = c(list(compactness = 10), sc_args)
     }
 
-    sc = do.call("supercells::supercells", args = sc_args)
+    sc = do.call("supercells", args = sc_args)
     sc$col = rgb2hex(sf::st_drop_geometry(sc[4:6]))
 
-    # sc = subset(sc, select = c("col", "geometry"))
+    sc = subset(sc, select = c("col", "geometry"))
     structure(sc, class = c("sf_paint", class(sc)))
 
 }
@@ -55,8 +55,6 @@ painting = function(
 #'
 #' @param x, `matrix` or `data.frame` of rgb color values.
 #'
-#' @importFrom grDevices rgb
-#'
 #' @return
 #' A `character` vector of hex color values
 #'
@@ -64,7 +62,7 @@ rgb2hex = function(x){
     apply(
         x
         , MARGIN = 1
-        , \(x) grDevices::rgb(x[1], x[2], x[3], maxColorValue = 255)
+        , \(x) rgb(x[1], x[2], x[3], maxColorValue = 255)
     )
 }
 
@@ -80,10 +78,12 @@ rgb2hex = function(x){
 plot.sf_paint = function(
     x
     , col = x$col
+    , ...
 ){
     plot(
         sf::st_geometry(x)
         , border = NA
         , col = col
+        , ...
     )
 }
