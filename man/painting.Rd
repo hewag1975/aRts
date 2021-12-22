@@ -2,7 +2,7 @@
 % Please edit documentation in R/painting.R
 \name{painting}
 \alias{painting}
-\title{Create a painting from a picture}
+\title{Create a painting from a picture using supercells}
 \usage{
 painting(x, ...)
 }
@@ -12,10 +12,11 @@ painting(x, ...)
 \item{...}{further arguments passed to \code{supercells()}}
 }
 \value{
-Object of class \code{stars}.
+Object of class \code{sf} containing the boundaries of the supercells and the
+average hex color value.
 }
 \description{
-Create a painting from a picture
+Create a painting from a picture using supercells
 }
 \details{
 This function takes an image and applies the concept of superpixels as
@@ -23,10 +24,10 @@ implemented in the \href{https://github.com/Nowosad/supercells}{supercells}
 package to get a painting like representation.
 }
 \examples{
-data(pic)
+data(autumn)
 ptg = painting(pic)
 par(mfrow = c(1, 2))
 plot(pic, rgb = 1:3)
-plot(ptg, rgb = 1:3)
+plot(ptg)
 
 }

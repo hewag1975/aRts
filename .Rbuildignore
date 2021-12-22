@@ -5,3 +5,6 @@
 ^dev_history\.R$
 ^vignettes/articles$
 ^data-raw$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

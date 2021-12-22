@@ -2,10 +2,16 @@
 % Please edit documentation in R/painting.R
 \name{rgb2hex}
 \alias{rgb2hex}
-\title{function to create hex color values from RGB}
+\title{Create hex color values from RGB}
 \usage{
 rgb2hex(x)
 }
+\arguments{
+\item{x, }{\code{matrix} or \code{data.frame} of rgb color values.}
+}
+\value{
+A \code{character} vector of hex color values
+}
 \description{
-function to create hex color values from RGB
+Create hex color values from RGB
 }
