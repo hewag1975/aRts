@@ -1,88 +1,101 @@
 ---
-title: "painting"
+title: "Create a painting from an image"
 editor_options: 
   chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-    collapse = TRUE,
-    comment = "#>"
+    collapse = TRUE
+    # , comment = "#>"
+    , out.width = "100%"
 )
 ```
 
 
-## Make a paining from a photo
+## Example images
 
-The package comes with a few example image which can be used for exploration. 
-All the included images have been converted to an object of class `stars`. 
+First load the required packages:
 
-```{r}
+```{r pkg, message = FALSE}
 library(stars)
 library(sf)
 library(aRts)
-data(autumn)
-class(autumn)
-autumn
 ```
 
-As you can see, the image has three dimensions (`r dim(autumn)`) and also has a 
-CRS assigned (`r sf::st_crs(autumn)$input`). Now, this does not make sense for a 
-photo but is just make it work. 
+The package comes with a few example images which can be used for exploration. 
+
+```{r img}
+ifl = system.file(
+    c("img/lake.jpg", "img/mountains.jpg")
+    , package = "aRts"
+)
+ifl
+```
+
+The images are imported into R using `stars::read_stars()`. This is due to the 
+fact that the `supercells()` function used to create the paintings requires an 
+object of class `stars` (or alternatively `terra`).
+
+```{r imp}
+img = lapply(
+    ifl
+    , FUN = read_stars
+)
+
+img[[1]]
+
+img[[2]]
+```
+
+
+## Create paintings
 
 Create a painting using the default settings.
 
 ```{r}
-plot(autumn, rgb = 1:3, main = "", reset = FALSE, useRaster = TRUE)
-autumn_paint = painting(autumn)
-autumn_paint
-class(autumn_paint)
+ptg = lapply(
+    img
+    , FUN = painting
+)
+
+ptg[[1]]
+class(ptg[[1]])
 ```
 
 Plot original image and painting side by side.
 
-```{r}
+```{r asp, include = FALSE}
+ratio = lapply(img, FUN = \(i) dim(i)[2] / (2 * dim(i)[1]))
+```
+
+```{r lake, fig.asp = ratio[[1]]}
 par(mfrow = c(1, 2))
-plot(autumn, rgb = 1:3, main = "", reset = FALSE, useRaster = TRUE)
-plot(autumn_paint)
+plot(img[[1]], rgb = 1:3, main = "", reset = FALSE, useRaster = TRUE)
+plot(ptg[[1]])
 ```
 
-Save the image to disk.
-
-```{r}
-# plot(sc)
-# class(sc)
-# jpeg(
-#     "img/fichtel_sc.jpg"
-#     , width = dim(img)[1]
-#     , height = dim(img)[2]
-#     , units = "px"
-# )
-# plot(
-#     sf::st_geometry(sc)
-#     , border = NA
-#     , col = sc$col
-# )
-# dev.off()
-```
-
-
-## Image preparation
-
-```{r, eval = FALSE}
-ifl = "~/Pictures/images/pic_001.jpg"
-autumn = stars::read_stars(ifl)
-names(autumn) = "Autumn forest"
-```
-
-
-
-```{r}
-data(mountains)
-mountains_paint = painting(mountains)
-
+```{r mountains, fig.asp = ratio[[2]]}
 par(mfrow = c(1, 2))
-plot(mountains, main = "", rgb = 1:3, reset = FALSE, useRaster = TRUE)
-plot(mountains_paint)
+plot(img[[2]], rgb = 1:3, main = "", reset = FALSE, useRaster = TRUE)
+plot(ptg[[2]])
+```
+
+
+## Export results
+
+The `sf_paint` object is basically a spatial class with a number of polygons 
+delineating areas of similar color compsition on the image. To save the paiting 
+to disk, you can use the plot device and .
+
+```{r exp, eval = FALSE}
+jpeg(
+    "~/lake_painting.jpg"
+    , width = dim(img[[1]])[1]
+    , height = dim(img[[1]])[2]
+    , units = "px"
+)
+plot(ptg[[1]])
+dev.off()
 ```
 
