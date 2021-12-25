@@ -25,9 +25,9 @@ package to get a painting like representation.
 }
 \examples{
 data(autumn)
-ptg = painting(pic)
+autumn_ptg = painting(autumn)
 par(mfrow = c(1, 2))
-plot(pic, rgb = 1:3)
-plot(ptg)
+plot(autumn, rgb = 1:3, main = "", reset = FALSE, useRaster = TRUE)
+plot(autumn_ptg)
 
 }
