@@ -2,6 +2,8 @@
 
 S3method(plot,sf_paint)
 export(painting)
+export(rgb2hex)
+importFrom(grDevices,rgb)
 importFrom(sf,st_drop_geometry)
 importFrom(sf,st_geometry)
 importFrom(stars,read_stars)

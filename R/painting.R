@@ -14,10 +14,10 @@
 #'
 #' @examples
 #' data(autumn)
-#' ptg = painting(pic)
+#' autumn_ptg = painting(autumn)
 #' par(mfrow = c(1, 2))
-#' plot(pic, rgb = 1:3)
-#' plot(ptg)
+#' plot(autumn, rgb = 1:3, main = "", reset = FALSE, useRaster = TRUE)
+#' plot(autumn_ptg)
 #'
 #' @importFrom sf st_drop_geometry
 #' @importFrom stars read_stars
@@ -31,7 +31,7 @@ painting = function(
 
     stopifnot(
         "'x' needs to be of class 'stars'!" = {
-            inherits(x, "stars")
+            inherits(x, what = "stars")
         }
     )
 
@@ -58,6 +58,9 @@ painting = function(
 #' @return
 #' A `character` vector of hex color values
 #'
+#' @importFrom grDevices rgb
+#'
+#' @export
 rgb2hex = function(x){
     apply(
         x
