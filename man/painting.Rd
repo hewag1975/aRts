@@ -24,10 +24,11 @@ implemented in the \href{https://github.com/Nowosad/supercells}{supercells}
 package to get a painting like representation.
 }
 \examples{
-data(autumn)
-autumn_ptg = painting(autumn)
+ifl = system.file("img/lake.jpg", package = "aRts")
+lake = stars::read_stars(ifl)
+lake_ptg = painting(lake)
 par(mfrow = c(1, 2))
-plot(autumn, rgb = 1:3, main = "", reset = FALSE, useRaster = TRUE)
-plot(autumn_ptg)
+plot(lake, rgb = 1:3, main = "", reset = FALSE, useRaster = TRUE)
+plot(lake_ptg)
 
 }

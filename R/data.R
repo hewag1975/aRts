@@ -5,7 +5,7 @@
 #' @format An object of class `stars`.
 #'
 #' @source private archive
-"autumn"
+# "autumn"
 
 #' Picture of a mountains.
 #'
@@ -14,4 +14,4 @@
 #' @format An object of class `stars`.
 #'
 #' @source private archive
-"mountains"
+# "mountains"

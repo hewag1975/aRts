@@ -13,13 +13,14 @@
 #' average hex color value.
 #'
 #' @examples
-#' data(autumn)
-#' autumn_ptg = painting(autumn)
+#' ifl = system.file("img/lake.jpg", package = "aRts")
+#' lake = stars::read_stars(ifl)
+#' lake_ptg = painting(lake)
 #' par(mfrow = c(1, 2))
-#' plot(autumn, rgb = 1:3, main = "", reset = FALSE, useRaster = TRUE)
-#' plot(autumn_ptg)
+#' plot(lake, rgb = 1:3, main = "", reset = FALSE, useRaster = TRUE)
+#' plot(lake_ptg)
 #'
-#' @importFrom sf st_drop_geometry
+#' @importFrom sf st_drop_geometry st_crs
 #' @importFrom stars read_stars
 #' @importFrom supercells supercells
 #'
@@ -34,6 +35,9 @@ painting = function(
             inherits(x, what = "stars")
         }
     )
+
+    ## add an arbitrary CRS
+    sf::st_crs(x) = 3035
 
     sc_args = c(list(x = x), list(...))
     if (!"k" %in% names(sc_args)) {
@@ -74,6 +78,7 @@ rgb2hex = function(x){
 #' @param x, object of class `sf_paint`.
 #' @param col, vector of color values. Defaults to the hexcolor column
 #'   attached when running `painting()`.
+#' @param ..., further arguments passed on to `plot()`
 #'
 #' @importFrom sf st_geometry
 #'

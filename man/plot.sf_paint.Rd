@@ -11,6 +11,8 @@
 
 \item{col, }{vector of color values. Defaults to the hexcolor column
 attached when running \code{painting()}.}
+
+\item{..., }{further arguments passed on to \code{plot()}}
 }
 \description{
 Plot object of class \code{sf_paint}
