@@ -6,48 +6,102 @@ editor_options:
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-    collapse = TRUE
-    # , comment = "#>"
-    , out.width = "100%"
+  collapse = TRUE
+  # , comment = "#>"
+  , out.width = "100%"
 )
 ```
 
 
-## Example images
+## Superpixels
 
-First load the required packages:
+The concept of SLIC superpixels is well explained in the package documentation of the 
+[supercells package](https://github.com/Nowosad/supercells). Basically, 
+superpixels segment an image into contiguous parts with similar color values. 
+The intention of the [supercells package](https://github.com/Nowosad/supercells) 
+is to apply this concept to a variety of spatial data. However, it can likewise 
+be applied to ordinary photographs to create painting- or cartoon-like image 
+representations. 
+
+There are also a few other R-packages available that do similar things but have 
+not been evaluated here:
+
+* [imager](https://github.com/dahtah/imager)
+* [SuperpixelImageSegmentation](https://github.com/mlampros/SuperpixelImageSegmentation)
+* [OpenImageR](https://mlampros.github.io/OpenImageR/articles/Image_segmentation_superpixels_clustering.html)
+
+
+## Example
+
+The `aRts` packages comes along with a selection of images that can be used for 
+exploration.
 
 ```{r pkg, message = FALSE}
 library(stars)
 library(sf)
 library(aRts)
-```
 
-The package comes with a few example images which can be used for exploration. 
-
-```{r img}
 ifl = system.file(
-    c("img/lake.jpg", "img/mountains.jpg")
-    , package = "aRts"
+  paste0("img/", c("autumn", "lake", "mountains_1", "mountains_2"), ".jpg")
+  , package = "aRts"
 )
 ifl
 ```
 
-The images are imported into R using `stars::read_stars()`. This is due to the 
-fact that the `supercells()` function used to create the paintings requires an 
-object of class `stars` (or alternatively `terra`).
+In order to apply the `supercells` implementation of superpixels, we need to 
+submit our images in a spatial format, either as `stars` or as `spatRaster` 
+object. 
 
 ```{r imp}
-img = lapply(
-    ifl
-    , FUN = read_stars
-)
-
-img[[1]]
-
-img[[2]]
+img = read_stars(ifl[[1]])
+img
+st_crs(img)
 ```
 
+Of course our image at this point in time does not contain 
+
+We can vary the reuqested number of supercells, see the effect:
+
+```{r}
+ptg = lapply(
+  c(500, 1000, 2000, 5000)
+  , FUN = \(i) painting(img, k = i)
+)
+
+par(mfrow = c(2, 2))
+for (i in 1:4) plot(ptg[[i]])
+```
+
+Likewise we can play with compactness:
+
+```{r}
+ptg = lapply(
+  c(1, 10, 50, 100)
+  , FUN = \(i) painting(img, k = 2500, compactness = i)
+)
+
+par(mfrow = c(2, 2))
+for (i in 1:4) plot(ptg[[i]])
+```
+
+Or the average function:
+
+```{r}
+ptg = lapply(
+  c("mean", "median", "max", "sd")
+  , FUN = \(i) {
+    painting(
+      img
+      , k = 2500
+      , compactness = 10
+      , avg_fun = eval(str2expression(i))
+    )
+  }
+)
+
+par(mfrow = c(2, 2))
+for (i in 1:4) plot(ptg[[i]])
+```
 
 ## Create paintings
 
@@ -55,8 +109,8 @@ Create a painting using the default settings.
 
 ```{r}
 ptg = lapply(
-    img
-    , FUN = painting
+  img
+  , FUN = painting
 )
 
 ptg[[1]]
@@ -90,12 +144,83 @@ to disk, you can use the plot device and .
 
 ```{r exp, eval = FALSE}
 jpeg(
-    "~/lake_painting.jpg"
-    , width = dim(img[[1]])[1]
-    , height = dim(img[[1]])[2]
-    , units = "px"
+  "~/lake_painting.jpg"
+  , width = dim(img[[1]])[1]
+  , height = dim(img[[1]])[2]
+  , units = "px"
 )
 plot(ptg[[1]])
 dev.off()
 ```
+
+
+## Bulk processing
+
+```{r imp}
+img = lapply(ifl, FUN = read_stars)
+ptg = lapply(img, FUN = painting, k = 2500, compactness = 50)
+
+par(mfrow = c(2, 2))
+lapply(ptg, FUN = plot)
+
+mapply(
+  \(img, ptg, ofl){
+    jpeg(
+      paste0("~/", ofl)
+      , width = dim(img)[1]
+      , height = dim(img)[2]
+      , units = "px"
+    )
+    plot(ptg)
+    dev.off()
+  }
+  , img = img
+  , ptg = ptg
+  , ofl = paste0("paint_", basename(ifl))
+)
+
+```
+
+
+
+
+
+
+```{r, eval = FALSE}
+ifl = system.file(
+  paste0("img/", c("autumn", "lake", "mountains_1", "mountains_2"), ".jpg")
+  , package = "aRts"
+)
+ifl
+
+library(OpenImageR)
+aut = readImage(ifl[1])
+
+aut_slic = superpixels(
+  input_image = aut,
+  method = "slic",
+  superpixel = 200, 
+  compactness = 20,
+  return_slic_data = TRUE,
+  return_labels = TRUE, 
+  write_slic = "", 
+  verbose = TRUE
+)
+
+par(mfrow=c(1,2), mar = c(0.2, 0.2, 0.2, 0.2))
+
+plot_slic = OpenImageR::NormalizeObject(aut_slic$slic_data)
+plot_slic = grDevices::as.raster(plot_slic)
+graphics::plot(plot_slic)
+
+plot_slico = OpenImageR::NormalizeObject(res_slico$slic_data)
+plot_slico = grDevices::as.raster(plot_slico)
+graphics::plot(plot_slico)
+
+
+library(magick)
+aut = image_read(ifl[1])
+plot(aut)
+```
+
 
