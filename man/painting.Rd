@@ -12,7 +12,11 @@ painting(x, ...)
 \item{...}{further arguments passed to \code{supercells()}}
 }
 \value{
+<<<<<<< HEAD
 Object of class \code{sf} containing the boundaries of the supercells and the
+=======
+Object of class \code{sf} containig the boundaries of the supercells and the
+>>>>>>> osmmaps
 average hex color value.
 }
 \description{
