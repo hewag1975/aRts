@@ -12,7 +12,8 @@ painting(x, ...)
 \item{...}{further arguments passed to \code{supercells()}}
 }
 \value{
-Object of class \code{stars}.
+Object of class \code{sf} containig the boundaries of the supercells and the
+average hex color value.
 }
 \description{
 Create a painting from a picture
